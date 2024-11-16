@@ -1,0 +1,23 @@
+{
+  "name": "react-native-is-multi-window",
+  "version": "1.0.0",
+  "description": "check if the current app is multiwindow",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wn-na/react-native-is-multi-window.git"
+  },
+  "keywords": [
+    "react-native",
+    "multiwindow"
+  ],
+  "author": "wn-na",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wn-na/react-native-is-multi-window/issues"
+  },
+  "homepage": "https://github.com/wn-na/react-native-is-multi-window#readme"
+}
