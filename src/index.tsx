@@ -18,19 +18,36 @@ const ReactNativeIsMultiWindowModule = NativeModules.ReactNativeIsMultiWindow
       }
     );
 
+const isSupportPlatform = () => {
+  return Platform.OS == 'android';
+};
+
 const ReactNativeIsMultiWindowEmitter =
-  Platform.OS === 'ios' || Platform.OS === 'android'
+  Platform.OS === 'android'
     ? new NativeEventEmitter(ReactNativeIsMultiWindowModule)
     : undefined;
 
-const addListener = (callback: (isMultiMode: boolean) => void): number => {
-  return 0;
+const addListener = (callback: (isMultiMode: boolean) => void) => {
+  if (!isSupportPlatform()) {
+    console.log(
+      `[react-native-is-multi-window] ${Platform.OS} is not supported`
+    );
+    return;
+  }
+  ReactNativeIsMultiWindowEmitter?.addListener(
+    'onMultiWindowModeChanged',
+    callback
+  );
 };
 
-const removeListener = (id: number) => {};
-
-export const isMultiWindowMode = async () => {
-  return true;
+export const isMultiWindowMode = async (): Promise<boolean> => {
+  if (!isSupportPlatform()) {
+    console.log(
+      `[react-native-is-multi-window] ${Platform.OS} is not supported`
+    );
+    return false;
+  }
+  return await ReactNativeIsMultiWindowModule?.isMultiWindowMode?.();
 };
 
 export const useMultiWindowMode = () => {
@@ -38,13 +55,10 @@ export const useMultiWindowMode = () => {
 
   useEffect(() => {
     isMultiWindowMode().then(setMultiMode);
-    const listener = addListener((mode) => {
+    addListener((mode) => {
       setMultiMode(mode);
     });
-    return () => {
-      removeListener(listener);
-    };
   }, []);
 
-  return { isMultiMode, isMultiWindowMode };
+  return { isMultiMode };
 };
