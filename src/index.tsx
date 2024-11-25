@@ -1,46 +1,64 @@
-import { useEffect, useState } from "react";
-import { NativeEventEmitter, NativeModules, Platform } from "react-native";
+import { useEffect, useState } from 'react';
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 
 const LINKING_ERROR =
-    `The package 'react-native-is-multi-window' doesn't seem to be linked. Make sure: \n\n` +
-    Platform.select({ ios: "- You have run 'pod install'\n", default: "" }) +
-    "- You rebuilt the app after installing the package\n";
+  `The package 'react-native-is-multi-window' doesn't seem to be linked. Make sure: \n\n` +
+  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
+  '- You rebuilt the app after installing the package\n' +
+  '- You are not using Expo Go\n';
 
-const ReactNativeIsMultiWindowModule = NativeModules.ReactNativeIsMultiWindow
-    ? NativeModules.ReactNativeIsMultiWindow
-    : new Proxy(
-          {},
-          {
-              get() {
-                  throw new Error(LINKING_ERROR);
-              },
-          }
-      );
+const ReactNativeIsMultiWindowModule = NativeModules.IsMultiWindow
+  ? NativeModules.IsMultiWindow
+  : new Proxy(
+      {},
+      {
+        get() {
+          throw new Error(LINKING_ERROR);
+        },
+      }
+    );
 
-const ReactNativeIsMultiWindowEmitter = Platform.OS === "ios" || Platform.OS === "android" ? new NativeEventEmitter(ReactNativeIsMultiWindowModule) : undefined;
-
-const addListener = (callback: (isMultiMode: boolean) => void): number => {
-    return 0;
+const isSupportPlatform = () => {
+  return Platform.OS === 'android';
 };
 
-const removeListener = (id: number) => {};
+const ReactNativeIsMultiWindowEmitter =
+  Platform.OS === 'android'
+    ? new NativeEventEmitter(ReactNativeIsMultiWindowModule)
+    : undefined;
 
-export const isMultiWindowMode = async () => {
-    return true;
+const addListener = (callback: (isMultiMode: boolean) => void) => {
+  if (!isSupportPlatform()) {
+    console.log(
+      `[react-native-is-multi-window] ${Platform.OS} is not supported`
+    );
+    return;
+  }
+  ReactNativeIsMultiWindowEmitter?.addListener(
+    'onMultiWindowModeChanged',
+    callback
+  );
+};
+
+export const isMultiWindowMode = async (): Promise<boolean> => {
+  if (!isSupportPlatform()) {
+    console.log(
+      `[react-native-is-multi-window] ${Platform.OS} is not supported`
+    );
+    return false;
+  }
+  return await ReactNativeIsMultiWindowModule?.isMultiWindowMode?.();
 };
 
 export const useMultiWindowMode = () => {
-    const [isMultiMode, setMultiMode] = useState(false);
+  const [isMultiMode, setMultiMode] = useState(false);
 
-    useEffect(() => {
-        isMultiWindowMode().then(setMultiMode);
-        const listener = addListener((mode) => {
-            setMultiMode(mode);
-        });
-        return () => {
-            removeListener(listener);
-        };
-    }, []);
+  useEffect(() => {
+    isMultiWindowMode().then(setMultiMode);
+    addListener((mode) => {
+      setMultiMode(mode);
+    });
+  }, []);
 
-    return { isMultiMode, isMultiWindowMode };
+  return { isMultiMode };
 };
