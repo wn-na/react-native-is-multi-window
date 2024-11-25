@@ -6,6 +6,8 @@ Quickly and easily check if your app is multiwindow
 
 - Android
 
+  ![image](https://github.com/user-attachments/assets/945aac7c-c5a5-42dd-8e50-5527c0ea77d4)
+
 ## Installation
 
 ```sh

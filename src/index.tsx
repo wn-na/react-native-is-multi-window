@@ -7,8 +7,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const ReactNativeIsMultiWindowModule = NativeModules.ReactNativeIsMultiWindow
-  ? NativeModules.ReactNativeIsMultiWindow
+const ReactNativeIsMultiWindowModule = NativeModules.IsMultiWindow
+  ? NativeModules.IsMultiWindow
   : new Proxy(
       {},
       {
@@ -19,7 +19,7 @@ const ReactNativeIsMultiWindowModule = NativeModules.ReactNativeIsMultiWindow
     );
 
 const isSupportPlatform = () => {
-  return Platform.OS == 'android';
+  return Platform.OS === 'android';
 };
 
 const ReactNativeIsMultiWindowEmitter =
