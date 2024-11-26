@@ -3,14 +3,20 @@
 Quickly and easily check if your app is multiwindow
 
 ## Support Platform
-
-- Android
-
-  ![image](https://github.com/user-attachments/assets/945aac7c-c5a5-42dd-8e50-5527c0ea77d4)
-
-- iOS, iPad OS
-
-  ![image](https://github.com/user-attachments/assets/945aac7c-c5a5-42dd-8e50-5527c0ea77d4)
+ 
+<table style="border: 2px;">
+  <tr>
+    <td>Android</td>
+    <td>iOS, iPad OS</td> 
+  </tr><tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/945aac7c-c5a5-42dd-8e50-5527c0ea77d4" width="480px" />
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/fa7b74bf-3fd4-4d36-a929-d18436a3ae48" width="480px" />
+    </td>
+  </tr>
+</table>
 
 ## Installation
 
