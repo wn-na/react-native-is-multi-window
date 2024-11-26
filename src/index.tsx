@@ -19,13 +19,12 @@ const ReactNativeIsMultiWindowModule = NativeModules.IsMultiWindow
     );
 
 const isSupportPlatform = () => {
-  return Platform.OS === 'android';
+  return Platform.OS === 'android' || Platform.OS === 'ios';
 };
 
-const ReactNativeIsMultiWindowEmitter =
-  Platform.OS === 'android'
-    ? new NativeEventEmitter(ReactNativeIsMultiWindowModule)
-    : undefined;
+const ReactNativeIsMultiWindowEmitter = isSupportPlatform()
+  ? new NativeEventEmitter(ReactNativeIsMultiWindowModule)
+  : undefined;
 
 const addListener = (callback: (isMultiMode: boolean) => void) => {
   if (!isSupportPlatform()) {
