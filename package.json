@@ -1,6 +1,6 @@
 {
   "name": "react-native-is-multi-window",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "Quickly and easily check if your app is multiwindowed",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
